@@ -1,106 +1,70 @@
 # Quick Start Guide
 
-Get your Solar of Things integration running in 5 minutes!
+Get Solar of Things running in Home Assistant in under 5 minutes.
 
 ## Prerequisites
 
-- ✅ Home Assistant installed (2023.1+)
-- ✅ Access to https://solar.siseli.com
-- ✅ At least one solar station configured
-
-## Step 1: Get Your Credentials (2 minutes)
-
-1. Open https://solar.siseli.com in your browser
-2. Login to your account
-3. Press **F12** to open Developer Tools
-4. Click the **Network** tab
-5. Refresh the page (**Ctrl+R** or **Cmd+R**)
-6. Click on any API request
-7. Copy these values:
-   - **IOT-Token** from Request Headers
-   - **deviceId** from Request Payload (18 digits)
-   - **stationId** from Request Payload (18 digits)
-
-![Finding Credentials](https://via.placeholder.com/600x300?text=See+INSTALLATION.md+for+detailed+screenshots)
-
-## Step 2: Install Integration (1 minute)
-
-### Option A: HACS (Recommended)
-1. Open HACS → Integrations
-2. Click ⋮ → Custom repositories
-3. Add: `https://github.com/conexocasa/solar-of-things-ha`
-4. Install "Solar of Things"
-
-### Option B: Manual
-1. Download this repository
-2. Copy `solar_of_things` folder to `/config/custom_components/`
-3. Restart Home Assistant
-
-## Step 3: Configure (2 minutes)
-
-1. Go to **Settings** → **Devices & Services**
-2. Click **+ Add Integration**
-3. Search for **"Solar of Things"**
-4. Enter your credentials:
-   ```
-   IOT Token:  [paste your token]
-   Station ID: [your 18-digit station ID]
-   Device ID:  [optional; leave blank to auto-discover all devices]
-   ```
-5. Click **Submit**
-
-## Step 4: Verify (30 seconds)
-
-1. Go to **Settings** → **Devices & Services**
-2. Find your "Solar Station" device
-3. You should see sensors like:
-   - ✅ PV Input Power
-   - ✅ Battery State of Charge
-   - ✅ Grid Import Power
-   - ✅ Load Power
-
-## Step 5: Add to Dashboard (Optional)
-
-### Quick Dashboard Card
-
-```yaml
-type: entities
-title: My Solar System
-entities:
-  - sensor.solar_station_xxxxx_pv_input_power
-  - sensor.solar_station_xxxxx_battery_state_of_charge
-  - sensor.solar_station_xxxxx_load_power
-```
-
-See [EXAMPLES.md](EXAMPLES.md) for more advanced cards!
-
-## Troubleshooting
-
-### "Cannot Connect" Error
-- ❌ Token expired → Get fresh token from solar.siseli.com
-- ❌ Wrong Device/Station ID → Verify 18-digit numbers
-- ❌ Network issue → Check firewall/internet
-
-### No Sensors Showing
-- ⏱️ Wait 5-10 minutes for first update
-- 🔍 Check logs: Settings → System → Logs
-- 🌐 Verify device online at solar.siseli.com
-
-### Need Help?
-- 📖 [Full Documentation](README.md)
-- 🛠️ [Installation Guide](INSTALLATION.md)
-- 💡 [Examples](EXAMPLES.md)
-- 🐛 [Report Issue](https://github.com/conexocasa/solar-of-things-ha/issues)
-
-## Next Steps
-
-- [ ] Add to Energy Dashboard
-- [ ] Create automations for low battery alerts
-- [ ] Set up notifications for high solar production
-- [ ] Explore template sensors for custom calculations
-
-See [EXAMPLES.md](EXAMPLES.md) for ideas!
+- ✅ Home Assistant 2023.6+
+- ✅ Active account at [solar.siseli.com](https://solar.siseli.com)
 
 ---
 
-**🎉 Congratulations!** You're now monitoring your solar system in Home Assistant!
+## Step 1 — Find Your Station ID (2 min)
+
+1. Open [https://solar.siseli.com](https://solar.siseli.com) and log in.
+2. Press **F12** → **Network** tab → refresh the page (**Ctrl+R**).
+3. Click any request to `solar.siseli.com`.
+4. In the **Payload** tab, find `stationId` — it's an 18-digit number.
+
+> Your **User ID** is your login account name (not an email address).
+> Your **Station ID** looks like `423564214316007425`.
+
+---
+
+## Step 2 — Install (1 min)
+
+### Option A: HACS
+1. HACS → Integrations → **⋮** → Custom repositories
+2. Add `https://github.com/Conexo-Casa/solar-of-things-ha` → Integration
+3. Search **Solar of Things** → Download
+4. Restart Home Assistant
+
+### Option B: Manual
+1. Download the ZIP from [Releases](https://github.com/Conexo-Casa/solar-of-things-ha/releases/latest)
+2. Extract `solar_of_things/` → copy to `/config/custom_components/`
+3. Restart Home Assistant
+
+---
+
+## Step 3 — Configure (2 min)
+
+1. **Settings → Devices & Services → + Add Integration**
+2. Search **Solar of Things**
+3. Select **User ID + Password** (recommended)
+4. Enter your **User ID**, **Password**, and **Station ID**
+5. Leave Device ID blank (auto-discovers all inverters)
+6. Click **Submit**
+
+---
+
+## Step 4 — Done ✅
+
+Go to **Settings → Devices & Services → Solar of Things**.
+
+You should see your inverter device with:
+- ☀️ 10 real-time power sensors
+- 🔋 3 battery control sliders
+- 🔽 2 operating mode dropdowns
+- 🔘 3 grid/backup switches
+- 📊 4 monthly energy sensors
+
+> Sensors show **Unknown** for the first 5 minutes — this is normal while the first poll runs.
+
+---
+
+## Next Steps
+
+- [Energy Dashboard setup](README.md#energy-dashboard)
+- [Automation examples](README.md#automation-examples)
+- [Troubleshooting](README.md#troubleshooting)
+- [Full documentation](README.md)
