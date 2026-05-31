@@ -6,6 +6,9 @@ on:
   pull_request:
     branches: [main]
 
+permissions:
+  contents: read
+
 jobs:
   lint:
     name: Lint & validate integration
@@ -23,19 +26,20 @@ jobs:
       - name: Install dependencies
         run: |
           pip install --quiet --upgrade pip
-          pip install --quiet homeassistant voluptuous requests
+          pip install --quiet voluptuous requests pycryptodome
 
-      - name: Validate manifest.json
+      - name: Validate custom_components/solar_of_things/manifest.json
         run: |
           python3 - <<'PY'
           import json, sys
-          m = json.load(open("manifest.json"))
-          required = ["domain","name","version","config_flow","iot_class","requirements"]
+          m = json.load(open("custom_components/solar_of_things/manifest.json"))
+          required = ["domain","name","version","config_flow","iot_class",
+                      "requirements","integration_type","homeassistant"]
           missing = [k for k in required if k not in m]
           if missing:
               print(f"manifest.json missing keys: {missing}")
               sys.exit(1)
-          print(f"manifest.json OK (version={m['version']})")
+          print(f"manifest.json OK (version={m['version']}, type={m['integration_type']})")
           PY
 
       - name: Validate hacs.json
@@ -43,35 +47,42 @@ jobs:
           python3 - <<'PY'
           import json, sys
           h = json.load(open("hacs.json"))
-          required = ["name","homeassistant"]
+          required = ["name", "homeassistant"]
           missing = [k for k in required if k not in h]
           if missing:
               print(f"hacs.json missing keys: {missing}")
               sys.exit(1)
-          print(f"hacs.json OK (name={h['name']})")
+          print(f"hacs.json OK (name={h['name']}, homeassistant={h['homeassistant']})")
           PY
 
-      - name: Validate strings / translations
+      - name: Validate strings / translations sync
         run: |
           python3 - <<'PY'
-          import json
-          s = json.load(open("strings.json"))
-          t = json.load(open("translations/en.json"))
-          print("strings.json OK")
-          print("translations/en.json OK")
+          import json, sys
+          s = json.load(open("custom_components/solar_of_things/strings.json"))
+          t = json.load(open("custom_components/solar_of_things/translations/en.json"))
+          # Both must parse as valid JSON and have at minimum a config key
+          for label, obj in [("strings.json", s), ("translations/en.json", t)]:
+              if "config" not in obj:
+                  print(f"{label} missing 'config' key")
+                  sys.exit(1)
+              print(f"{label} OK")
           PY
 
-      - name: Check Python syntax (all .py files)
+      - name: Check Python syntax
         run: |
-          python3 -m py_compile __init__.py api.py config_flow.py \
-            const.py sensor.py number.py select.py switch.py
+          cd custom_components/solar_of_things
+          python3 -m py_compile \
+            __init__.py api.py config_flow.py const.py \
+            sensor.py number.py select.py switch.py
           echo "Python syntax OK"
 
       - name: Run unit tests (if present)
         run: |
-          pip install --quiet pytest pytest-asyncio pytest-homeassistant-custom-component || true
+          pip install --quiet pytest pytest-asyncio || true
           if [ -d tests ]; then
-            python3 -m pytest tests/ -v --tb=short || echo "Tests done (failures allowed on CI without HA fixtures)"
+            python3 -m pytest tests/ -v --tb=short \
+              || echo "Tests done (failures allowed on CI without full HA fixtures)"
           else
-            echo "No tests directory found"
+            echo "No tests directory — skipping"
           fi

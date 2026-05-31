@@ -310,9 +310,13 @@ class SolarOfThingsAPI:
         _LOGGER.debug("SolarOfThings: logging in as %s", self._user_id)
 
         import json as _json
-        # The portal sends the password as MD5(plaintext_password) lowercase hex.
-        # Sending plaintext returns code 7 "password error" even with valid creds.
-        password_md5 = hashlib.md5(self._password.encode("utf-8")).hexdigest()
+        # The Siseli portal transmits the password as MD5(plaintext) lowercase hex —
+        # the server rejects plaintext with error code 7.  This is a protocol
+        # requirement of the upstream API, not a choice we can change.  The hash
+        # is sent over HTTPS, so the transport layer provides confidentiality.
+        # CodeQL alert suppressed: MD5 use here is non-cryptographic (protocol-mandated
+        # pre-hashing by the upstream service), not used for storage or key derivation.
+        password_md5 = hashlib.md5(self._password.encode("utf-8")).hexdigest()  # noqa: S324
         payload = {
             "account": self._user_id,
             "password": password_md5,

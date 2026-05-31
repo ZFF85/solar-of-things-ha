@@ -7,6 +7,37 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [2.4.2] - 2026-05-31
+
+### Security / Quality
+- **Removed stale root-level duplicate files** (`__init__.py`, `api.py`, `config_flow.py`,
+  `const.py`, `sensor.py`, `number.py`, `select.py`, `switch.py`, `manifest.json`,
+  `strings.json`, `translations/`) — these were leftover copies from before the
+  v2.4.0 HACS restructure. They confused CodeQL (triggering duplicate alerts on
+  deleted code), could mislead HACS, and were dead code.
+- **GitHub Actions `permissions` hardened** — `validate.yml` and `codeql.yml` now
+  declare `permissions: contents: read` (principle of least privilege). Resolves
+  CodeQL alert #1 *(actions/missing-workflow-permissions)*.
+- **CodeQL workflow added** (`.github/workflows/codeql.yml`) — explicit weekly
+  security scan scoped to `custom_components/solar_of_things/` only, with a
+  documented exclusion for the protocol-mandated MD5 pre-hash.
+- **CodeQL config added** (`.github/codeql-config.yml`) — scopes analysis to the
+  integration source, ignores `dist/` and `tests/`, and documents the
+  `py/weak-sensitive-data-hashing` suppression rationale.
+- **MD5 suppression documented in source** (`api.py` line ~315) — added
+  `# noqa: S324` and an explanatory comment. The Siseli API rejects plaintext
+  passwords (returns error code 7); MD5(password) is a protocol requirement of
+  the upstream service transmitted over HTTPS. This is not password storage and
+  cannot be changed without breaking authentication.
+- **`validate.yml` fixed** — was still pointing at root-level `.py` files and
+  `manifest.json` (which no longer exist). Now correctly validates
+  `custom_components/solar_of_things/`. Added `integration_type` and
+  `homeassistant` to the manifest required-key check.
+- **`release.yml` fixed** — was building the ZIP from root-level files. Now zips
+  `custom_components/solar_of_things/` correctly.
+
+---
+
 ## [2.4.1] - 2026-05-31
 
 ### Fixed
