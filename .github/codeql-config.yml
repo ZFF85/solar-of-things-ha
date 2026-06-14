@@ -1,21 +1,19 @@
 name: "Solar of Things CodeQL config"
 
-# Only scan the actual integration code, not stale root copies or test fixtures
+# Only scan the actual integration code — ignore dist/ and any future test fixtures
 paths:
   - custom_components/solar_of_things
 
 paths-ignore:
   - dist/
   - tests/
-  - "*.md"
+  - "**/*.md"
 
 queries:
   - uses: security-extended
 
-query-filters:
-  # The Siseli API mandates MD5(password) as a protocol requirement — the server
-  # rejects plaintext. This is not password storage and the transport is HTTPS.
-  # Suppress the weak-hashing alert for this specific protocol-compliance usage.
-  - exclude:
-      id: py/weak-sensitive-data-hashing
-      tags contain: weak-cryptography
+# Note: py/weak-sensitive-data-hashing is suppressed inline in api.py with
+# "# noqa: S324" and an explanatory comment. The Siseli portal API requires
+# MD5(password) — the server returns error code 7 for plaintext. This is a
+# protocol requirement of the upstream service, not password storage, and is
+# transmitted over HTTPS only.

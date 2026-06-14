@@ -9,9 +9,6 @@ on:
 permissions:
   contents: read
 
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-
 jobs:
   lint:
     name: Lint & validate integration
@@ -19,10 +16,10 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.12"
 
@@ -31,18 +28,18 @@ jobs:
           pip install --quiet --upgrade pip
           pip install --quiet voluptuous requests pycryptodome
 
-      - name: Validate custom_components/solar_of_things/manifest.json
+      - name: Validate manifest.json
         run: |
           python3 - <<'PY'
           import json, sys
           m = json.load(open("custom_components/solar_of_things/manifest.json"))
-          required = ["domain","name","version","config_flow","iot_class",
-                      "requirements","integration_type","homeassistant"]
+          required = ["domain", "name", "version", "config_flow", "iot_class",
+                      "requirements", "integration_type", "homeassistant"]
           missing = [k for k in required if k not in m]
           if missing:
               print(f"manifest.json missing keys: {missing}")
               sys.exit(1)
-          print(f"manifest.json OK (version={m['version']}, type={m['integration_type']})")
+          print(f"manifest.json OK — version={m['version']}, type={m['integration_type']}, ha>={m['homeassistant']}")
           PY
 
       - name: Validate hacs.json
@@ -55,19 +52,21 @@ jobs:
           if missing:
               print(f"hacs.json missing keys: {missing}")
               sys.exit(1)
-          print(f"hacs.json OK (name={h['name']}, homeassistant={h['homeassistant']})")
+          print(f"hacs.json OK — name={h['name']}, homeassistant>={h['homeassistant']}")
           PY
 
       - name: Validate strings / translations sync
         run: |
           python3 - <<'PY'
           import json, sys
-          s = json.load(open("custom_components/solar_of_things/strings.json"))
-          t = json.load(open("custom_components/solar_of_things/translations/en.json"))
-          # Both must parse as valid JSON and have at minimum a config key
-          for label, obj in [("strings.json", s), ("translations/en.json", t)]:
+          base = "custom_components/solar_of_things"
+          for label, path in [
+              ("strings.json",        f"{base}/strings.json"),
+              ("translations/en.json", f"{base}/translations/en.json"),
+          ]:
+              obj = json.load(open(path))
               if "config" not in obj:
-                  print(f"{label} missing 'config' key")
+                  print(f"{label} missing required 'config' key")
                   sys.exit(1)
               print(f"{label} OK")
           PY
@@ -85,7 +84,7 @@ jobs:
           pip install --quiet pytest pytest-asyncio || true
           if [ -d tests ]; then
             python3 -m pytest tests/ -v --tb=short \
-              || echo "Tests done (failures allowed on CI without full HA fixtures)"
+              || echo "Tests completed (failures tolerated without full HA fixtures)"
           else
             echo "No tests directory — skipping"
           fi
