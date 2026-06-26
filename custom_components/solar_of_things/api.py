@@ -596,6 +596,7 @@ class SolarOfThingsAPI:
 
         keys = [
             "pvInputPower",
+            "pvPower",
             "acOutputActivePower",
             "batteryDischargeCurrent",
             "batteryChargingCurrent",
@@ -624,12 +625,32 @@ class SolarOfThingsAPI:
             )
 
         payload_data = (data.get("data") or {}).get("payload") or {}
-        fields = payload_data.get("fields") or {}
+        fields = payload_data.get("fields") or (data.get("data") or {}).get("fields") or {}
 
         latest_values: dict[str, Any] = {}
-        for key, arr in fields.items():
-            if isinstance(arr, list) and arr:
-                latest_values[key] = arr[-1]
+        field_units: dict[str, str] = {}
+        for key, raw in fields.items():
+            if isinstance(raw, list) and raw:
+                latest_values[key] = raw[-1]
+            elif isinstance(raw, dict):
+                if "value" in raw:
+                    latest_values[key] = raw["value"]
+                unit = raw.get("unit")
+                if isinstance(unit, str):
+                    field_units[key] = unit
+
+        # Newer DatouBoss/Siseli responses expose PV input power as pvPower in kW.
+        if "pvInputPower" not in latest_values and "pvPower" in latest_values:
+            latest_values["pvInputPower"] = latest_values["pvPower"]
+            field_units["pvInputPower"] = field_units.get("pvPower", "")
+
+        if field_units.get("pvInputPower") == "kW":
+            try:
+                latest_values["pvInputPower"] = (
+                    float(latest_values["pvInputPower"]) * 1000.0
+                )
+            except Exception:
+                pass
 
         # Unit normalisation: acOutputActivePower is kW in API → W
         if "acOutputActivePower" in latest_values:

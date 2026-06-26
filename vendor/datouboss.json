@@ -1,0 +1,1395 @@
+{
+    "code": 0,
+    "message": "Success",
+    "localMessage": "Success",
+    "data": {
+        "time": "2026-06-26T13:54:48Z",
+        "fields": {
+            "parallelModeTurnOffVoltage": {
+                "unit": "V",
+                "value": 44,
+                "valueDisplay": "44",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Second output shutdown voltage"
+            },
+            "bmsDischargeCurrent": {
+                "unit": "A",
+                "value": 0,
+                "valueDisplay": "0",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "BMS Discharge Current"
+            },
+            "inputVoltageTooHigh": {
+                "unit": "",
+                "value": "0",
+                "valueDisplay": "No",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Input Voltage Too High"
+            },
+            "maxUtilityChargeCurrent": {
+                "unit": "A",
+                "value": 30,
+                "valueDisplay": "30",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Max utility charge current"
+            },
+            "overTemperatureRestartFunction": {
+                "unit": "",
+                "value": "0",
+                "valueDisplay": "Close",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Over Temperature Restart Function"
+            },
+            "pvGeneratedEnergyOfDay1": {
+                "unit": "kWh",
+                "value": 85.9,
+                "valueDisplay": "85.9",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Total Power Generation"
+            },
+            "mainsCurrentFlowDirection": {
+                "unit": "",
+                "value": "+",
+                "valueDisplay": "Mains To Inverter",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Mains Current Flow Direction"
+            },
+            "bmsCommunicationControlFunction": {
+                "unit": "",
+                "value": "0",
+                "valueDisplay": "Close",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "BMS Communication Control Function"
+            },
+            "load_power": {
+                "unit": "kW",
+                "value": 0.01,
+                "valueDisplay": "0.01",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Output Active Power"
+            },
+            "batteryEqualizationMode": {
+                "unit": "",
+                "value": "0",
+                "valueDisplay": "Disable",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Battery Equalization Mode"
+            },
+            "solarChargingSwitch": {
+                "unit": "",
+                "value": "1",
+                "valueDisplay": "Open",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Solar Charging Switch"
+            },
+            "bmsDischargeVoltageLimit": {
+                "unit": "V",
+                "value": 42.8,
+                "valueDisplay": "42.8",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "BMS Discharge Voltage Limit"
+            },
+            "batteryCapacity": {
+                "unit": "%",
+                "value": 80,
+                "valueDisplay": "80",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Battery Capacity"
+            },
+            "secondOutputBatteryCapacity": {
+                "unit": "%",
+                "value": 95,
+                "valueDisplay": "95",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Second Output Battery Capacity"
+            },
+            "mainsPower": {
+                "unit": "kW",
+                "value": 0,
+                "valueDisplay": "0",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Mains Power"
+            },
+            "bmsLowPowerSOC": {
+                "unit": "%",
+                "value": 10,
+                "valueDisplay": "10",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "BMS Low Power SOC"
+            },
+            "deviceType": {
+                "unit": "",
+                "value": "HPVINV08",
+                "valueDisplay": "HPVINV08",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Device Type"
+            },
+            "automaticReturnToTheFirstPageFunction": {
+                "unit": "",
+                "value": "1",
+                "valueDisplay": "On",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Automatic Return To The First Page Function"
+            },
+            "totalNumberOfGridConnection": {
+                "unit": "",
+                "value": 0,
+                "valueDisplay": "0",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Total Number Of Grid Connection"
+            },
+            "fan1Status": {
+                "unit": "",
+                "value": "1",
+                "valueDisplay": "Open",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Fan 1 Status"
+            },
+            "ctZeroingPower": {
+                "unit": "kW",
+                "value": 0.15,
+                "valueDisplay": "0.15",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "CT zeroing power"
+            },
+            "pvGeneratedEnergyOfDay": {
+                "unit": "kWh",
+                "value": 0,
+                "valueDisplay": "0",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Daily Power Gen."
+            },
+            "acChargingSwitch": {
+                "unit": "",
+                "value": "0",
+                "valueDisplay": "Close",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "AC Charging Switch"
+            },
+            "bmsAllowChargingFlag": {
+                "unit": "",
+                "value": "0",
+                "valueDisplay": "No",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "BMS Allow Charging Flag"
+            },
+            "pvPower": {
+                "unit": "kW",
+                "value": 0.042,
+                "valueDisplay": "0.042",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "PV Power"
+            },
+            "returnToMainsModeVoltage": {
+                "unit": "V",
+                "value": 49.4,
+                "valueDisplay": "49.4",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Return To Mains Mode Voltage"
+            },
+            "str": {
+                "unit": "",
+                "value": "B1010010",
+                "valueDisplay": "B1010010",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "str"
+            },
+            "secondOutputDischargeTime": {
+                "unit": "min",
+                "value": 0,
+                "valueDisplay": "0",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Second Output Discharge Time"
+            },
+            "mainOutputRelayStatus": {
+                "unit": "",
+                "value": "1",
+                "valueDisplay": "On",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Main Output Relay Status"
+            },
+            "outputLoadPercent": {
+                "unit": "%",
+                "value": 1,
+                "valueDisplay": "1",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Output Load Percent"
+            },
+            "inductorCurrent": {
+                "unit": "A",
+                "value": 1.5,
+                "valueDisplay": "1.5",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Inductor Current"
+            },
+            "powerSupplyFromPVToLoadInACState": {
+                "unit": "",
+                "value": "0",
+                "valueDisplay": "No",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Power Supply From PV To Load In AC State"
+            },
+            "strongChargingVoltage": {
+                "unit": "V",
+                "value": 55.4,
+                "valueDisplay": "55.4",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Strong Charging Voltage"
+            },
+            "gridConnectionFunction": {
+                "unit": "",
+                "value": "0",
+                "valueDisplay": "Off",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Grid Connection Function"
+            },
+            "outputEndingTime": {
+                "unit": "h",
+                "value": 0,
+                "valueDisplay": "0",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Output Ending Time"
+            },
+            "softwareVersion": {
+                "unit": "",
+                "value": 20.03,
+                "valueDisplay": "20.03",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Software Version"
+            },
+            "statusCode": {
+                "unit": "",
+                "value": "00",
+                "valueDisplay": "00",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Status Code"
+            },
+            "CTFunctionSwitch": {
+                "unit": "",
+                "value": "0",
+                "valueDisplay": "OFF",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "CT Function Switch"
+            },
+            "bmsReturnsToBatteryModeSOC": {
+                "unit": "%",
+                "value": 95,
+                "valueDisplay": "95",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "BMS Returns To Battery Mode SOC"
+            },
+            "bmsDischargeOvercurrentFlag": {
+                "unit": "",
+                "value": "0",
+                "valueDisplay": "No",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "BMS Discharge Overcurrent Flag"
+            },
+            "ctSamplingPower": {
+                "unit": "kW",
+                "value": 0,
+                "valueDisplay": "0",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "CT sampling power"
+            },
+            "pvTemperature": {
+                "unit": "°C",
+                "value": 32,
+                "valueDisplay": "32",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "PV Temperature"
+            },
+            "pvGridConnectionAgreement": {
+                "unit": "",
+                "value": "4",
+                "valueDisplay": "mode4",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "PV Grid Connection Agreement"
+            },
+            "bmsChargingOvercurrentSign": {
+                "unit": "",
+                "value": "0",
+                "valueDisplay": "No",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "BMS Charging Overcurrent Sign"
+            },
+            "lowBatteryAlarm": {
+                "unit": "",
+                "value": "0",
+                "valueDisplay": "No",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Low Battery Alarm"
+            },
+            "tqfMinVoltageCellPosition": {
+                "unit": "",
+                "value": "ID:0(0)",
+                "valueDisplay": "ID:0(0)",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Min Voltage Cell Position"
+            },
+            "pvEnergyFeedingPriority": {
+                "unit": "",
+                "value": "0",
+                "valueDisplay": "BLU",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "PV Energy Feeding Priority"
+            },
+            "tqfNominalCapacity": {
+                "unit": "A",
+                "value": 0,
+                "valueDisplay": "0",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Nominal Capacity"
+            },
+            "tqfMonthlyElectricityGeneration": {
+                "unit": "kWh",
+                "value": 0,
+                "valueDisplay": "0",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Monthly Electricity Generation"
+            },
+            "fan2Status": {
+                "unit": "",
+                "value": "1",
+                "valueDisplay": "Open",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Fan 2 Status"
+            },
+            "bmsAllowDischargeFlag": {
+                "unit": "",
+                "value": "0",
+                "valueDisplay": "No",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "BMS Allow Discharge Flag"
+            },
+            "batteryNumberInSeries": {
+                "unit": "",
+                "value": 4,
+                "valueDisplay": "4",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Battery Number In Series"
+            },
+            "liBatteryActivationProcess": {
+                "unit": "",
+                "value": "0",
+                "valueDisplay": "Stop",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Li Battery Activation Process"
+            },
+            "overloadRestartFunction": {
+                "unit": "",
+                "value": "0",
+                "valueDisplay": "Close",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Overload Restart Function"
+            },
+            "bmsReturnsToMainsModeSOC": {
+                "unit": "%",
+                "value": 20,
+                "valueDisplay": "20",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "BMS Returns To Mains Mode SOC"
+            },
+            "mainsChargingStartingTime": {
+                "unit": "h",
+                "value": 0,
+                "valueDisplay": "0",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Mains Charging Starting Time"
+            },
+            "inverterLightStatus": {
+                "unit": "",
+                "value": "1",
+                "valueDisplay": "Light",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Inverter Light Status"
+            },
+            "batteryChargingCurrent": {
+                "unit": "A",
+                "value": 0,
+                "valueDisplay": "0",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Battery Charging Current"
+            },
+            "bmsChargeCurrentLimit": {
+                "unit": "A",
+                "value": 10,
+                "valueDisplay": "10",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "BMS Charge Current Limit"
+            },
+            "liBatteryActivationFunctionSwitch": {
+                "unit": "",
+                "value": "0",
+                "valueDisplay": "Close",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Li Battery Activation Function Switch"
+            },
+            "mainsChargingEndingTime": {
+                "unit": "h",
+                "value": 0,
+                "valueDisplay": "0",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Mains Charging Ending Time"
+            },
+            "maximumTotalChargingCurrent": {
+                "unit": "A",
+                "value": 50,
+                "valueDisplay": "50",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Maximum Total Charging Current"
+            },
+            "batteryVoltageHigher": {
+                "unit": "",
+                "value": "0",
+                "valueDisplay": "No",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Battery Voltage Higher"
+            },
+            "batteryNotConnected": {
+                "unit": "",
+                "value": "0",
+                "valueDisplay": "No",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Battery Not Connected"
+            },
+            "lowFrequencyOfMainsPowerLoss": {
+                "unit": "Hz",
+                "value": 45,
+                "valueDisplay": "45",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Low Frequency Of Mains Power Loss"
+            },
+            "inverterTemperature": {
+                "unit": "°C",
+                "value": 37,
+                "valueDisplay": "37",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Inverter Temperature"
+            },
+            "lcdBackLighting": {
+                "unit": "",
+                "value": "1",
+                "valueDisplay": "On",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "LCD Back Lighting"
+            },
+            "outputModel": {
+                "unit": "",
+                "value": "0",
+                "valueDisplay": "SIG",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Output Model"
+            },
+            "abnormalTemperatureSensor": {
+                "unit": "",
+                "value": "0",
+                "valueDisplay": "No",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Abnormal Temperature Sensor"
+            },
+            "chargingLightStatus": {
+                "unit": "",
+                "value": "1",
+                "valueDisplay": "Light",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Charging Light Status"
+            },
+            "gridConnectionSign": {
+                "unit": "",
+                "value": "0",
+                "valueDisplay": "Off Grid",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Grid Connection Sign"
+            },
+            "batteryType": {
+                "unit": "",
+                "value": "2",
+                "valueDisplay": "USE",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Battery Type"
+            },
+            "maxTemperature": {
+                "unit": "",
+                "value": 37,
+                "valueDisplay": "37",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Max. Temperature"
+            },
+            "eepromDataAbnormality": {
+                "unit": "",
+                "value": "0",
+                "valueDisplay": "No",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "EEPROM Data Abnormality"
+            },
+            "abnormalFanSpeed": {
+                "unit": "",
+                "value": "0",
+                "valueDisplay": "No",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Abnormal Fan Speed"
+            },
+            "overloadToBypassFunction": {
+                "unit": "",
+                "value": "0",
+                "valueDisplay": "Close",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Overload To Bypass Function"
+            },
+            "bmsCurrentSOC": {
+                "unit": "%",
+                "value": 100,
+                "valueDisplay": "100",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "BMS Current SOC"
+            },
+            "equalizationOvertime": {
+                "unit": "min",
+                "value": 120,
+                "valueDisplay": "120",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Equalization Overtime"
+            },
+            "parallelRole": {
+                "unit": "",
+                "value": "0",
+                "valueDisplay": "Switching",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Parallel Role"
+            },
+            "acInputVoltage": {
+                "unit": "V",
+                "value": 0,
+                "valueDisplay": "0",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "AC input voltage"
+            },
+            "bmsTemperatureTooHighFlag": {
+                "unit": "",
+                "value": "0",
+                "valueDisplay": "No",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "BMS Temperature Too High Flag"
+            },
+            "pvCurrent": {
+                "unit": "A",
+                "value": 0.3,
+                "valueDisplay": "0.3",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "PV Current"
+            },
+            "fan1Speed": {
+                "unit": "%",
+                "value": 50,
+                "valueDisplay": "50",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Fan 1 Speed"
+            },
+            "tqfDisplayMode": {
+                "unit": "",
+                "value": "0",
+                "valueDisplay": "Do Not Display BMS Details",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Display Mode"
+            },
+            "mode": {
+                "unit": "",
+                "value": "B",
+                "valueDisplay": "Battery Mode",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Mode"
+            },
+            "eco": {
+                "unit": "",
+                "value": "0",
+                "valueDisplay": "Off",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "ECO"
+            },
+            "outputSetVoltage": {
+                "unit": "V",
+                "value": 230,
+                "valueDisplay": "230",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Output Set Voltage"
+            },
+            "bmsLowPowerFaultFlag": {
+                "unit": "",
+                "value": "0",
+                "valueDisplay": "No",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "BMS Low Power Fault Flag"
+            },
+            "fan2Speed": {
+                "unit": "%",
+                "value": 50,
+                "valueDisplay": "50",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Fan 2 Speed"
+            },
+            "generationPower": {
+                "unit": "kW",
+                "value": 0.042,
+                "valueDisplay": "0.042",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Generation Power"
+            },
+            "secondOutputBatteryVoltage": {
+                "unit": "V",
+                "value": 52,
+                "valueDisplay": "52",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Second Output Battery Voltage"
+            },
+            "bmsAutomaticallyStartsSOCAfterLow": {
+                "unit": "%",
+                "value": 50,
+                "valueDisplay": "50",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "BMS Automatically Starts SOC After Low"
+            },
+            "ctSamplingCurrent": {
+                "unit": "A",
+                "value": 0,
+                "valueDisplay": "0",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "CT sampling current"
+            },
+            "tqfRemainingCapacity": {
+                "unit": "A",
+                "value": 0,
+                "valueDisplay": "0",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Remaining Capacity"
+            },
+            "batteryDischargeCurrent": {
+                "unit": "A",
+                "value": 0,
+                "valueDisplay": "0",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Battery Discharge Current"
+            },
+            "lowPointOfMainsPowerLossVoltage": {
+                "unit": "V",
+                "value": 90,
+                "valueDisplay": "90",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Low Point Of Mains Power Loss Voltage"
+            },
+            "bmsChargingCurrent": {
+                "unit": "A",
+                "value": 0,
+                "valueDisplay": "0",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "BMS Charging Current"
+            },
+            "highFrequencyofMainsPowerLoss": {
+                "unit": "Hz",
+                "value": 65,
+                "valueDisplay": "65",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "High Frequency Of Mains Power Loss"
+            },
+            "transformerTemperature": {
+                "unit": "°C",
+                "value": 1,
+                "valueDisplay": "1",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Transformer Temperature"
+            },
+            "tqfMaxVoltage": {
+                "unit": "mV",
+                "value": 0,
+                "valueDisplay": "0",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Max Voltage"
+            },
+            "pvChargingMark": {
+                "unit": "",
+                "value": "2",
+                "valueDisplay": "Open",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "PV Charging Mark"
+            },
+            "gridConnectedCurrent": {
+                "unit": "A",
+                "value": 10,
+                "valueDisplay": "10",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Grid Connected Current"
+            },
+            "bmsLowTemperatureFlag": {
+                "unit": "",
+                "value": "0",
+                "valueDisplay": "No",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "BMS Low Temperature Flag"
+            },
+            "outputApparentPower": {
+                "unit": "kVA",
+                "value": 0.114,
+                "valueDisplay": "0.114",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Output Apparent Power"
+            },
+            "outputSetFrequency": {
+                "unit": "Hz",
+                "value": "0",
+                "valueDisplay": "50",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Output Set Frequency"
+            },
+            "tqfMinVoltage": {
+                "unit": "mV",
+                "value": 0,
+                "valueDisplay": "0",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Min Voltage"
+            },
+            "overLoaderd": {
+                "unit": "",
+                "value": "0",
+                "valueDisplay": "No",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "OverLoaded"
+            },
+            "tqfBatteryVoltage2": {
+                "unit": "mV",
+                "value": 0,
+                "valueDisplay": "0",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Battery Voltage 2"
+            },
+            "equalizationTime": {
+                "unit": "min",
+                "value": 60,
+                "valueDisplay": "60",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Equalization Time"
+            },
+            "tqfBatteryVoltage3": {
+                "unit": "mV",
+                "value": 0,
+                "valueDisplay": "0",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Battery Voltage 3"
+            },
+            "doesTheMachineHaveAnOutput": {
+                "unit": "",
+                "value": "1",
+                "valueDisplay": "Yes",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Does The Machine Have An Output"
+            },
+            "tqfBatteryVoltage4": {
+                "unit": "mV",
+                "value": 0,
+                "valueDisplay": "0",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Battery Voltage 4"
+            },
+            "mainsLightStatus": {
+                "unit": "",
+                "value": "0",
+                "valueDisplay": "Off",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Mains Light Status"
+            },
+            "mpptConstantTemperatureMode": {
+                "unit": "",
+                "value": "0",
+                "valueDisplay": "Disable",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "MPPT Constant Temperature Mode"
+            },
+            "tqfBatteryVoltage5": {
+                "unit": "mV",
+                "value": 0,
+                "valueDisplay": "0",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Battery Voltage 5"
+            },
+            "buzzerFunction": {
+                "unit": "",
+                "value": "1",
+                "valueDisplay": "On",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Buzzer Function"
+            },
+            "tqfBatteryVoltage6": {
+                "unit": "mV",
+                "value": 0,
+                "valueDisplay": "0",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Battery Voltage 6"
+            },
+            "tqfBatteryVoltage7": {
+                "unit": "mV",
+                "value": 0,
+                "valueDisplay": "0",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Battery Voltage 7"
+            },
+            "eepromReadWriteException": {
+                "unit": "",
+                "value": "0",
+                "valueDisplay": "No",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "EEPROM Read Write Exception"
+            },
+            "tqfBatteryVoltage8": {
+                "unit": "mV",
+                "value": 0,
+                "valueDisplay": "0",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Battery Voltage 8"
+            },
+            "tqfBatteryVoltage9": {
+                "unit": "mV",
+                "value": 0,
+                "valueDisplay": "0",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Battery Voltage 9"
+            },
+            "bmsAverageTemperature": {
+                "unit": "°C",
+                "value": 24.95,
+                "valueDisplay": "24.95",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "BMS Average Temperature"
+            },
+            "tqfYearlyElectricityGeneration": {
+                "unit": "kWh",
+                "value": 0,
+                "valueDisplay": "0",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Yearly Electricity Generation"
+            },
+            "tqfMaxVoltageCellPosition": {
+                "unit": "",
+                "value": "ID:0(0)",
+                "valueDisplay": "ID:0(0)",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Max Voltage Cell Position"
+            },
+            "outputDCComponent": {
+                "unit": "",
+                "value": 420,
+                "valueDisplay": "420",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Output DC Component"
+            },
+            "tqfBatteryVoltage1": {
+                "unit": "mV",
+                "value": 0,
+                "valueDisplay": "0",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Battery Voltage 1"
+            },
+            "boostTemperature": {
+                "unit": "°C",
+                "value": 34,
+                "valueDisplay": "34",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Boost Temperature"
+            },
+            "bmsLowBatteryAlarmFlag": {
+                "unit": "",
+                "value": "0",
+                "valueDisplay": "No",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "BMS Low Battery Alarm Flag"
+            },
+            "workingMode": {
+                "unit": "",
+                "value": "1",
+                "valueDisplay": "SBU",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Working  Mode"
+            },
+            "batteryOvervoltageShutdownVoltage": {
+                "unit": "V",
+                "value": 48.4,
+                "valueDisplay": "48.4",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Battery Overvoltage Shutdown Voltage"
+            },
+            "busVoltage": {
+                "unit": "V",
+                "value": 443,
+                "valueDisplay": "443",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "BUS Voltage"
+            },
+            "equalizationInterval": {
+                "unit": "day",
+                "value": 30,
+                "valueDisplay": "30",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Equalization Interval"
+            },
+            "systemTime": {
+                "unit": "",
+                "value": "2026-06-26 15:54:00",
+                "valueDisplay": "2026-06-26 15:54:00",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "System Time"
+            },
+            "dualOutputMode": {
+                "unit": "",
+                "value": "1",
+                "valueDisplay": "On",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Dual Output Mode"
+            },
+            "restartVoltageAfterLowPower": {
+                "unit": "V",
+                "value": 51.9,
+                "valueDisplay": "51.9",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Restart voltage after low power"
+            },
+            "batDisCurrLimit": {
+                "unit": "A",
+                "value": 200,
+                "valueDisplay": "200",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Discharge current limit value"
+            },
+            "bmsCommunicationStatus": {
+                "unit": "",
+                "value": "0",
+                "valueDisplay": "Off",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "BMS Communication Status"
+            },
+            "abnormalLowPVPower": {
+                "unit": "",
+                "value": "0",
+                "valueDisplay": "No",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Abnormal Low PV Power"
+            },
+            "warningLightStatus": {
+                "unit": "",
+                "value": "0",
+                "valueDisplay": "Off",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Warning Light Status"
+            },
+            "floatChargingVoltage": {
+                "unit": "V",
+                "value": 55.3,
+                "valueDisplay": "55.3",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Float Charging Voltage"
+            },
+            "parallelMode": {
+                "unit": "",
+                "value": "1",
+                "valueDisplay": "Enable",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Second Output Mode"
+            },
+            "tqfBatteryVoltage11": {
+                "unit": "mV",
+                "value": 0,
+                "valueDisplay": "0",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Battery Voltage 11"
+            },
+            "tqfBatteryVoltage12": {
+                "unit": "mV",
+                "value": 0,
+                "valueDisplay": "0",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Battery Voltage 12"
+            },
+            "inputSourcePromptFunction": {
+                "unit": "",
+                "value": "1",
+                "valueDisplay": "On",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Input Source Prompt Function"
+            },
+            "mainsFrequency": {
+                "unit": "Hz",
+                "value": 0,
+                "valueDisplay": "0",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Mains Frequency"
+            },
+            "lowElectricLockVoltage": {
+                "unit": "V",
+                "value": 47.3,
+                "valueDisplay": "47.3",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Low Electric Lock Voltage"
+            },
+            "tqfBatteryVoltage10": {
+                "unit": "mV",
+                "value": 0,
+                "valueDisplay": "0",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Battery Voltage 10"
+            },
+            "tqfBatteryVoltage15": {
+                "unit": "mV",
+                "value": 0,
+                "valueDisplay": "0",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Battery Voltage 15"
+            },
+            "pvVoltage": {
+                "unit": "V",
+                "value": 106.7,
+                "valueDisplay": "106.7",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "PV Voltage"
+            },
+            "tqfBatteryVoltage16": {
+                "unit": "mV",
+                "value": 0,
+                "valueDisplay": "0",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Battery Voltage 16"
+            },
+            "machineOverTemperature": {
+                "unit": "",
+                "value": "0",
+                "valueDisplay": "No",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Machine Over Temperature"
+            },
+            "tqfBatteryVoltage13": {
+                "unit": "mV",
+                "value": 0,
+                "valueDisplay": "0",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Battery Voltage 13"
+            },
+            "tqfBatteryVoltage14": {
+                "unit": "mV",
+                "value": 0,
+                "valueDisplay": "0",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Battery Voltage 14"
+            },
+            "bmsChargeVoltageLimit": {
+                "unit": "V",
+                "value": 56.8,
+                "valueDisplay": "56.8",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "BMS Charge Voltage Limit"
+            },
+            "parallelModeTurnOffSOC": {
+                "unit": "%",
+                "value": 20,
+                "valueDisplay": "20",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "The second output is turned off SOC"
+            },
+            "highPointOfMainsPowerLossVoltage": {
+                "unit": "V",
+                "value": 264,
+                "valueDisplay": "264",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "High Point Of Mains Power Loss Voltage"
+            },
+            "batteryEqualizationVoltage": {
+                "unit": "V",
+                "value": 58.4,
+                "valueDisplay": "58.4",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Battery Equalization Voltage"
+            },
+            "outputVoltage": {
+                "unit": "V",
+                "value": 229.8,
+                "valueDisplay": "229.8",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Output Voltage"
+            },
+            "batteryVoltage": {
+                "unit": "V",
+                "value": 55.5,
+                "valueDisplay": "55.5",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Battery Voltage"
+            },
+            "chargingPriorityOrder": {
+                "unit": "",
+                "value": "2",
+                "valueDisplay": "OSO",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Charging Priority Order"
+            },
+            "secondDelayTime": {
+                "unit": "min",
+                "value": 5,
+                "valueDisplay": "5",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Second Delay Time"
+            },
+            "mainsInputRange": {
+                "unit": "",
+                "value": "0",
+                "valueDisplay": "APL",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Mains Input Range"
+            },
+            "outputFrequency": {
+                "unit": "Hz",
+                "value": 50,
+                "valueDisplay": "50",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Output Frequency"
+            },
+            "outputStartingTime": {
+                "unit": "h",
+                "value": 0,
+                "valueDisplay": "0",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Output Starting Time"
+            },
+            "batteryStatus": {
+                "unit": "",
+                "value": "2",
+                "valueDisplay": "Charge",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Battery Status"
+            },
+            "gridConnectedPowers": {
+                "unit": "kW",
+                "value": 3,
+                "valueDisplay": "3",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Grid connected power"
+            },
+            "chargingMainSwitch": {
+                "unit": "",
+                "value": "1",
+                "valueDisplay": "Open",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Charging Main Switch"
+            },
+            "bmsCommunicationNormal": {
+                "unit": "",
+                "value": "0",
+                "valueDisplay": "No",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "BMS Communication Normal"
+            },
+            "returnToBatteryModeVoltage": {
+                "unit": "V",
+                "value": 51.9,
+                "valueDisplay": "51.9",
+                "associatedEventAttributeKeys": [],
+                "isHidden": null,
+                "nameDisplay": "Return To Battery Mode Voltage"
+            }
+        },
+        "groups": [
+            {
+                "key": "pv_panel_status",
+                "name": "PV Panel Status",
+                "isHidden": false
+            },
+            {
+                "key": "grid_status",
+                "name": "Grid Status",
+                "isHidden": false
+            },
+            {
+                "key": "battery_status",
+                "name": "Battery Status",
+                "isHidden": false
+            },
+            {
+                "key": "load_status",
+                "name": "Load Status",
+                "isHidden": false
+            },
+            {
+                "key": "bms_status",
+                "name": "BMS Status",
+                "isHidden": false
+            },
+            {
+                "key": "virtual_more_group_R5Yh4pwj",
+                "name": "More",
+                "isHidden": false
+            }
+        ],
+        "firingAlarms": []
+    }
+}
