@@ -31,24 +31,55 @@ async def async_setup_entry(
 
     for device_id, coordinator in device_coordinators.items():
         device_name = (coordinator.device_meta or {}).get("name") or device_id
-        entities.extend(
-            [
-                SolarOfThingsBatteryChargeLimitNumber(api, coordinator, station_id, device_id, device_name),
-                SolarOfThingsBatteryDischargeLimitNumber(api, coordinator, station_id, device_id, device_name),
-                SolarOfThingsGridChargeLimitNumber(api, coordinator, station_id, device_id, device_name),
-            ]
-        )
+        settings = (coordinator.data or {}).get("settings") or {}
+        candidates: list[type[_BaseNumber]] = [
+            SolarOfThingsBatteryChargeLimitNumber,
+            SolarOfThingsBatteryDischargeLimitNumber,
+            SolarOfThingsGridChargeLimitNumber,
+        ]
+        for entity_cls in candidates:
+            if entity_cls.setting_key_available(settings):
+                entities.append(entity_cls(api, coordinator, station_id, device_id, device_name))
+            else:
+                _LOGGER.debug(
+                    "Skipping %s for %s; none of the writable setting keys exist: %s",
+                    entity_cls.__name__, device_id, entity_cls._setting_candidates,
+                )
 
     async_add_entities(entities)
 
 
 class _BaseNumber(CoordinatorEntity, NumberEntity):
+    _setting_candidates: tuple[str, ...] = ()
+
     def __init__(self, api, coordinator, station_id: str, device_id: str, device_name: str) -> None:
         super().__init__(coordinator)
         self._api = api
         self._station_id = station_id
         self._device_id = device_id
         self._device_name = device_name
+
+    @classmethod
+    def setting_key_available(cls, settings: dict) -> bool:
+        return any(key in settings for key in cls._setting_candidates)
+
+    @property
+    def _setting_key(self) -> str | None:
+        settings = ((self.coordinator.data or {}).get("settings") or {})
+        return next((key for key in self._setting_candidates if key in settings), None)
+
+    def _native_setting_value(self):
+        key = self._setting_key
+        if not key:
+            return None
+        setting = ((self.coordinator.data or {}).get("settings") or {}).get(key)
+        if isinstance(setting, dict):
+            return setting.get("value")
+        return setting
+
+    @property
+    def available(self) -> bool:
+        return super().available and self._setting_key is not None
 
     @property
     def device_info(self):
@@ -62,7 +93,9 @@ class _BaseNumber(CoordinatorEntity, NumberEntity):
 
 
 class SolarOfThingsBatteryChargeLimitNumber(_BaseNumber):
-    _setting_key = "maximumTotalChargingCurrent"
+    _setting_candidates = (
+        "maximumChargingCurrentSetting",
+    )
 
     def __init__(self, api, coordinator, station_id: str, device_id: str, device_name: str) -> None:
         super().__init__(api, coordinator, station_id, device_id, device_name)
@@ -77,22 +110,22 @@ class SolarOfThingsBatteryChargeLimitNumber(_BaseNumber):
 
     @property
     def native_value(self):
-        data = self.coordinator.data or {}
-        settings = data.get("settings") or {}
-        if self._setting_key in settings:
-            setting = settings[self._setting_key]
-            if isinstance(setting, dict):
-                return setting.get("value")
-            return setting
-        return (data.get("time_series") or {}).get(self._setting_key)
+        return self._native_setting_value()
 
     async def async_set_native_value(self, value: float) -> None:
-        await self.hass.async_add_executor_job(self._api.set_battery_charge_limit, self._device_id, int(value))
+        key = self._setting_key
+        if not key:
+            return
+        await self.hass.async_add_executor_job(self._api.set_device_setting, self._device_id, key, int(value))
         await self.coordinator.async_request_refresh()
 
 
 class SolarOfThingsBatteryDischargeLimitNumber(_BaseNumber):
-    _setting_key = "batteryDischargeLimit"
+    _setting_candidates = (
+        "bmsReturnsToMainsModeSOCSetting",
+        "returnToMainsModeSOCSetting",
+        "lowPowerSOCSetting",
+    )
 
     def __init__(self, api, coordinator, station_id: str, device_id: str, device_name: str) -> None:
         super().__init__(api, coordinator, station_id, device_id, device_name)
@@ -107,15 +140,23 @@ class SolarOfThingsBatteryDischargeLimitNumber(_BaseNumber):
 
     @property
     def native_value(self):
-        return ((self.coordinator.data or {}).get("settings") or {}).get(self._setting_key)
+        return self._native_setting_value()
 
     async def async_set_native_value(self, value: float) -> None:
-        await self.hass.async_add_executor_job(self._api.set_battery_discharge_limit, self._device_id, int(value))
+        key = self._setting_key
+        if not key:
+            return
+        await self.hass.async_add_executor_job(self._api.set_device_setting, self._device_id, key, int(value))
         await self.coordinator.async_request_refresh()
 
 
 class SolarOfThingsGridChargeLimitNumber(_BaseNumber):
-    _setting_key = "gridChargeLimit"
+    _setting_candidates = (
+        "gridChargeLimit",
+        "gridChargeLimitSetting",
+        "maxUtilityChargeCurrent",
+        "maxUtilityChargeCurrentSetting",
+    )
 
     def __init__(self, api, coordinator, station_id: str, device_id: str, device_name: str) -> None:
         super().__init__(api, coordinator, station_id, device_id, device_name)
@@ -131,8 +172,11 @@ class SolarOfThingsGridChargeLimitNumber(_BaseNumber):
 
     @property
     def native_value(self):
-        return ((self.coordinator.data or {}).get("settings") or {}).get(self._setting_key)
+        return self._native_setting_value()
 
     async def async_set_native_value(self, value: float) -> None:
-        await self.hass.async_add_executor_job(self._api.set_grid_charge_limit, self._device_id, int(value))
+        key = self._setting_key
+        if not key:
+            return
+        await self.hass.async_add_executor_job(self._api.set_device_setting, self._device_id, key, int(value))
         await self.coordinator.async_request_refresh()

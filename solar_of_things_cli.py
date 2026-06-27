@@ -39,6 +39,7 @@ API_LOGIN = "/apis/login/account"
 API_REFRESH_TOKEN = "/apis/login/refresh/access/token"
 API_DEVICE_LIST = "/apis/device/list"
 API_TIME_SERIES = "/apis/deviceState/simple/attribute/keys/history/v1"
+API_SETTINGS_GET = "/apis/remote/device/configs/cache/get"
 
 IOT_APP_ID = "rBrTRfAPXz"
 IOT_APP_SECRET_ENC = "I4D0KRr2339z3pQ/at91V9BpFAOe54DaTafwSm6suIQ="
@@ -286,6 +287,13 @@ class SolarOfThingsClient:
             },
         )
 
+    def fetch_settings(self, device_id: str) -> dict[str, Any]:
+        self.ensure_token()
+        url = f"{API_BASE_URL}{API_SETTINGS_GET}?deviceId={device_id}"
+        resp = self.session.post(url, json={}, timeout=30)
+        resp.raise_for_status()
+        return resp.json()
+
 
 def current_time(time_zone: str) -> datetime:
     if ZoneInfo:
@@ -390,6 +398,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--hours", type=int, default=1)
     parser.add_argument("--json", action="store_true", help="Print machine-readable JSON.")
     parser.add_argument("--list-devices", action="store_true")
+    parser.add_argument("--settings", action="store_true", help="Dump remote writable config cache for a device.")
     return parser.parse_args()
 
 
@@ -414,6 +423,10 @@ def main() -> int:
 
     if not args.device_id:
         raise SystemExit("--device-id or SOT_DEVICE_ID is required")
+
+    if args.settings:
+        print(json.dumps(client.fetch_settings(args.device_id), ensure_ascii=False, indent=2))
+        return 0
 
     response = client.fetch_raw_measurements(args.device_id, hours=args.hours)
     print_measurements(extract_measurements(response), as_json=args.json)

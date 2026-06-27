@@ -772,6 +772,10 @@ class SolarOfThingsAPI:
     # session already carries) and pass deviceId as a URL query parameter rather
     # than in the JSON body.
 
+    def set_device_setting(self, device_id: str, key: str, value: Any) -> None:
+        """Write a discovered device setting key=value."""
+        self._write_setting(device_id, key, value)
+
     def _write_setting(self, device_id: str, key: str, value: Any) -> None:
         """Write a single device setting key=value via the remote config write API."""
         self._ensure_token_valid()
@@ -867,8 +871,8 @@ class SolarOfThingsAPI:
         self._write_setting(device_id, "outputSourcePrioritySetting", value)
 
     def set_battery_charge_limit(self, device_id: str, amps: int) -> None:
-        """Set maximum total charging current in amps."""
-        self._write_setting(device_id, "maximumTotalChargingCurrent", amps)
+        """Set maximum charging current in amps."""
+        self._write_setting(device_id, "maximumChargingCurrentSetting", amps)
 
     def set_battery_discharge_limit(self, device_id: str, percent: int) -> None:
         """Set battery discharge limit / minimum SOC (0–100 %)."""
