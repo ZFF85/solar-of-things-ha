@@ -53,6 +53,7 @@ TOKEN_REFRESH_LEAD_SECONDS = 300  # 5 minutes
 # ─── Sensor keys ───────────────────────────────────────────────────────────────
 SENSOR_KEYS = [
     "pvInputPower",
+    "pvVoltage",
     "acOutputActivePower",
     "batteryDischargeCurrent",
     "batteryChargingCurrent",
@@ -69,6 +70,12 @@ SENSOR_DEFINITIONS = {
         "name": "PV Input Power",
         "unit": "W",
         "device_class": "power",
+        "icon": "mdi:solar-power",
+    },
+    "pvVoltage": {
+        "name": "PV Voltage",
+        "unit": "V",
+        "device_class": "voltage",
         "icon": "mdi:solar-power",
     },
     "acOutputActivePower": {

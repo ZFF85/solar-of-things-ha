@@ -93,6 +93,9 @@
       "pv_input_power": {
         "name": "PV Input Power"
       },
+      "pv_voltage": {
+        "name": "PV Voltage"
+      },
       "ac_output_active_power": {
         "name": "AC Output Power"
       },

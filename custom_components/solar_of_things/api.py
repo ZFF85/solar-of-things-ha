@@ -632,20 +632,24 @@ class SolarOfThingsAPI:
             else:
                 latest_values[key] = raw
 
-        # Newer DatouBoss/Siseli responses expose PV input power as pvPower in kW.
-        if "pvInputPower" not in latest_values and "pvPower" in latest_values:
-            latest_values["pvInputPower"] = latest_values["pvPower"]
+        # DatouBoss exposes the reliable PV input power as pvPower in kW.
+        # Prefer it over legacy pvInputPower whenever it is present.
+        if "pvPower" in latest_values:
+            try:
+                latest_values["pvInputPower"] = float(latest_values["pvPower"]) * 1000.0
+            except Exception:
+                latest_values["pvInputPower"] = latest_values["pvPower"]
             field_metadata["pvInputPower"] = {
                 **field_metadata.get("pvPower", {}),
                 "unit": "W",
                 "name": "PV Input Power",
             }
-
-        if field_metadata.get("pvPower", {}).get("unit") == "kW":
+        elif field_metadata.get("pvInputPower", {}).get("unit") == "kW":
             try:
                 latest_values["pvInputPower"] = (
                     float(latest_values["pvInputPower"]) * 1000.0
                 )
+                field_metadata["pvInputPower"]["unit"] = "W"
             except Exception:
                 pass
 
