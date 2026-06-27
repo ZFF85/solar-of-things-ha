@@ -46,23 +46,35 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry, async_add_e
 
     for device_id, coordinator in device_coordinators.items():
         device_name = (coordinator.device_meta or {}).get("name") or device_id
-        entities.extend(
-            [
-                SolarOfThingsOperatingModeSelect(api, coordinator, station_id, device_id, device_name),
-                SolarOfThingsBatteryPrioritySelect(api, coordinator, station_id, device_id, device_name),
-            ]
-        )
+        settings = (coordinator.data or {}).get("settings") or {}
+        candidates: list[type[_BaseSelect]] = [
+            SolarOfThingsOperatingModeSelect,
+            SolarOfThingsBatteryPrioritySelect,
+        ]
+        for entity_cls in candidates:
+            if entity_cls.setting_key_available(settings):
+                entities.append(entity_cls(api, coordinator, station_id, device_id, device_name))
 
     async_add_entities(entities)
 
 
 class _BaseSelect(CoordinatorEntity, SelectEntity):
+    _setting_key: str = ""
+
     def __init__(self, api, coordinator, station_id: str, device_id: str, device_name: str) -> None:
         super().__init__(coordinator)
         self._api = api
         self._station_id = station_id
         self._device_id = device_id
         self._device_name = device_name
+
+    @classmethod
+    def setting_key_available(cls, settings: dict) -> bool:
+        return cls._setting_key in settings
+
+    @property
+    def available(self) -> bool:
+        return super().available and self.setting_key_available((self.coordinator.data or {}).get("settings") or {})
 
     @property
     def device_info(self):
@@ -76,6 +88,8 @@ class _BaseSelect(CoordinatorEntity, SelectEntity):
 
 
 class SolarOfThingsOperatingModeSelect(_BaseSelect):
+    _setting_key = "outputSourcePrioritySetting"
+
     """Select entity for Output Source Priority (outputSourcePrioritySetting).
 
     Reflects the real device API key.  Values 0/1/2 map to USO/SUB/SBU.
@@ -91,7 +105,7 @@ class SolarOfThingsOperatingModeSelect(_BaseSelect):
     @property
     def current_option(self) -> str | None:
         settings = ((self.coordinator.data or {}).get("settings") or {})
-        entry = settings.get("outputSourcePrioritySetting")
+        entry = settings.get(self._setting_key)
         if entry is None:
             return None
         raw = entry.get("value") if isinstance(entry, dict) else entry
@@ -101,11 +115,13 @@ class SolarOfThingsOperatingModeSelect(_BaseSelect):
             return None
 
     async def async_select_option(self, option: str) -> None:
-        await self.hass.async_add_executor_job(self._api.set_operating_mode, self._device_id, option)
+        await self.hass.async_add_executor_job(self._api.set_device_setting, self._device_id, self._setting_key, {v: k for k, v in OUTPUT_MODE_BY_VALUE.items()}[option])
         await self.coordinator.async_request_refresh()
 
 
 class SolarOfThingsBatteryPrioritySelect(_BaseSelect):
+    _setting_key = "chargerSourcePrioritySetting"
+
     """Select entity for Charger Source Priority (chargerSourcePrioritySetting).
 
     Reflects the real device API key.  Values 0/1/2 map to CSO/SNU/OSO.
@@ -121,7 +137,7 @@ class SolarOfThingsBatteryPrioritySelect(_BaseSelect):
     @property
     def current_option(self) -> str | None:
         settings = ((self.coordinator.data or {}).get("settings") or {})
-        entry = settings.get("chargerSourcePrioritySetting")
+        entry = settings.get(self._setting_key)
         if entry is None:
             return None
         raw = entry.get("value") if isinstance(entry, dict) else entry
@@ -131,5 +147,5 @@ class SolarOfThingsBatteryPrioritySelect(_BaseSelect):
             return None
 
     async def async_select_option(self, option: str) -> None:
-        await self.hass.async_add_executor_job(self._api.set_battery_priority, self._device_id, option)
+        await self.hass.async_add_executor_job(self._api.set_device_setting, self._device_id, self._setting_key, {v: k for k, v in CHARGER_PRIORITY_BY_VALUE.items()}[option])
         await self.coordinator.async_request_refresh()

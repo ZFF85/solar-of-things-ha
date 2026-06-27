@@ -50,7 +50,7 @@ from .const import (
 
 _LOGGER = logging.getLogger(__name__)
 
-PLATFORMS: list[Platform] = [Platform.SENSOR, Platform.NUMBER, Platform.SELECT, Platform.SWITCH]
+PLATFORMS: list[Platform] = [Platform.SENSOR, Platform.NUMBER, Platform.SELECT, Platform.SWITCH, Platform.DATETIME]
 
 DEVICE_UPDATE_INTERVAL = timedelta(minutes=5)
 STATION_UPDATE_INTERVAL = timedelta(minutes=30)

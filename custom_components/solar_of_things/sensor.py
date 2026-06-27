@@ -60,6 +60,21 @@ def _device_sensor_definitions(coordinator_data: dict | None) -> dict[str, dict]
                 "icon": _icon_for_field(key, meta.get("unit") or ""),
             },
         )
+
+    settings = (coordinator_data or {}).get("settings") or {}
+    for key, raw in settings.items():
+        if not isinstance(raw, dict) or raw.get("isHidden") is True:
+            continue
+        sensor_key = f"setting__{key}"
+        unit = raw.get("unit") or ""
+        definitions.setdefault(
+            sensor_key,
+            {
+                "name": raw.get("nameDisplay") or raw.get("name") or key,
+                "unit": unit,
+                "icon": _icon_for_field(key, unit),
+            },
+        )
     return definitions
 
 
@@ -199,8 +214,13 @@ class SolarOfThingsDeviceSensor(CoordinatorEntity, SensorEntity):
 
     @property
     def native_value(self):
-        ts = (self.coordinator.data or {}).get("time_series") or {}
-        val = ts.get(self._sensor_key)
+        if self._sensor_key.startswith("setting__"):
+            setting_key = self._sensor_key.removeprefix("setting__")
+            entry = ((self.coordinator.data or {}).get("settings") or {}).get(setting_key)
+            val = entry.get("value") if isinstance(entry, dict) else entry
+        else:
+            ts = (self.coordinator.data or {}).get("time_series") or {}
+            val = ts.get(self._sensor_key)
         if val is None:
             return None
         try:
@@ -210,9 +230,20 @@ class SolarOfThingsDeviceSensor(CoordinatorEntity, SensorEntity):
 
     @property
     def extra_state_attributes(self):
+        attrs = {}
+        if self._sensor_key.startswith("setting__"):
+            setting_key = self._sensor_key.removeprefix("setting__")
+            metadata = ((self.coordinator.data or {}).get("settings") or {}).get(setting_key) or {}
+            if isinstance(metadata, dict):
+                attrs["setting_key"] = setting_key
+                if metadata.get("nameDisplay") or metadata.get("name"):
+                    attrs["upstream_name"] = metadata.get("nameDisplay") or metadata.get("name")
+                if metadata.get("valueDisplay"):
+                    attrs["value_display"] = metadata["valueDisplay"]
+            return attrs
+
         ts = (self.coordinator.data or {}).get("time_series") or {}
         metadata = (ts.get("__field_metadata") or {}).get(self._sensor_key) or {}
-        attrs = {}
         if metadata.get("name"):
             attrs["upstream_name"] = metadata["name"]
         if metadata.get("value_display"):

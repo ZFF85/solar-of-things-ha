@@ -24,13 +24,21 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry, async_add_e
 
     for device_id, coordinator in device_coordinators.items():
         device_name = (coordinator.device_meta or {}).get("name") or device_id
-        entities.extend(
-            [
-                SolarOfThingsGridChargingSwitch(api, coordinator, station_id, device_id, device_name),
-                SolarOfThingsGridFeedInSwitch(api, coordinator, station_id, device_id, device_name),
-                SolarOfThingsBackupModeSwitch(api, coordinator, station_id, device_id, device_name),
-            ]
-        )
+        settings = (coordinator.data or {}).get("settings") or {}
+        candidates: list[type[_BaseSwitch]] = [
+            SolarOfThingsEcoModeSwitch,
+            SolarOfThingsGridChargingSwitch,
+            SolarOfThingsGridFeedInSwitch,
+            SolarOfThingsBackupModeSwitch,
+        ]
+        for entity_cls in candidates:
+            if entity_cls.setting_key_available(settings):
+                entities.append(entity_cls(api, coordinator, station_id, device_id, device_name))
+            else:
+                _LOGGER.debug(
+                    "Skipping %s for %s; setting key %s is unavailable",
+                    entity_cls.__name__, device_id, entity_cls._setting_key,
+                )
 
     async_add_entities(entities)
 
@@ -49,12 +57,22 @@ def _setting_value(coordinator_data: dict | None, key: str) -> int | None:
 
 
 class _BaseSwitch(CoordinatorEntity, SwitchEntity):
+    _setting_key: str = ""
+
     def __init__(self, api, coordinator, station_id: str, device_id: str, device_name: str) -> None:
         super().__init__(coordinator)
         self._api = api
         self._station_id = station_id
         self._device_id = device_id
         self._device_name = device_name
+
+    @classmethod
+    def setting_key_available(cls, settings: dict) -> bool:
+        return cls._setting_key in settings
+
+    @property
+    def available(self) -> bool:
+        return super().available and self.setting_key_available((self.coordinator.data or {}).get("settings") or {})
 
     @property
     def device_info(self):
@@ -67,7 +85,37 @@ class _BaseSwitch(CoordinatorEntity, SwitchEntity):
         }
 
 
+class SolarOfThingsEcoModeSwitch(_BaseSwitch):
+    """Switch for ECO mode (ecoMode)."""
+
+    _setting_key = "ecoMode"
+
+    def __init__(self, api, coordinator, station_id: str, device_id: str, device_name: str) -> None:
+        super().__init__(api, coordinator, station_id, device_id, device_name)
+        self._attr_name = f"{device_name} ECO Mode"
+        self._attr_unique_id = f"{DOMAIN}_{station_id}_{device_id}_eco_mode"
+        self._attr_device_class = SwitchDeviceClass.SWITCH
+        self._attr_icon = "mdi:leaf"
+
+    @property
+    def is_on(self) -> bool | None:
+        val = _setting_value(self.coordinator.data, self._setting_key)
+        if val is None:
+            return None
+        return val == 1
+
+    async def async_turn_on(self, **kwargs):
+        await self.hass.async_add_executor_job(self._api.set_device_setting, self._device_id, self._setting_key, 1)
+        await self.coordinator.async_request_refresh()
+
+    async def async_turn_off(self, **kwargs):
+        await self.hass.async_add_executor_job(self._api.set_device_setting, self._device_id, self._setting_key, 0)
+        await self.coordinator.async_request_refresh()
+
+
 class SolarOfThingsGridChargingSwitch(_BaseSwitch):
+    _setting_key = "acInputRangeSetting"
+
     """Switch for AC Input Range setting (acInputRangeSetting).
 
     0 = Appliance mode – wide input voltage range, grid charging allowed.
@@ -99,6 +147,8 @@ class SolarOfThingsGridChargingSwitch(_BaseSwitch):
 
 
 class SolarOfThingsGridFeedInSwitch(_BaseSwitch):
+    _setting_key = "batteryPowerLimitingSetting"
+
     """Switch for GRID grid switch (batteryPowerLimitingSetting).
 
     0 = OFF (grid switch disabled / feed-in off).
@@ -129,6 +179,8 @@ class SolarOfThingsGridFeedInSwitch(_BaseSwitch):
 
 
 class SolarOfThingsBackupModeSwitch(_BaseSwitch):
+    _setting_key = "outputSourcePrioritySetting"
+
     """Switch that maps to Output Source Priority SBU (backup/off-grid biased).
 
     ON  → outputSourcePrioritySetting = 2 (SBU: Solar+Battery first, grid last).
