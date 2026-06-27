@@ -283,7 +283,7 @@ class SolarOfThingsAPI:
                 "Origin": "https://solar.siseli.com",
                 "Referer": "https://solar.siseli.com/",
                 "User-Agent": (
-                    "HomeAssistant-SolarOfThings/2.3.0 "
+                    "HomeAssistant-SolarOfThings/2.6.0 "
                     "(+https://github.com/conexocasa/solar-of-things-ha)"
                 ),
             }
@@ -594,17 +594,6 @@ class SolarOfThingsAPI:
         end_time = self._now()
         start_time = end_time - timedelta(hours=1)
 
-        keys = [
-            "pvInputPower",
-            "pvPower",
-            "acOutputActivePower",
-            "batteryDischargeCurrent",
-            "batteryChargingCurrent",
-            "batteryVoltage",
-            "feedInPower",
-            "batterySOC",
-        ]
-
         data = self._post(
             API_TIME_SERIES,
             {
@@ -614,7 +603,6 @@ class SolarOfThingsAPI:
                 "fromTime": self._format_time(start_time),
                 "toTime": self._format_time(end_time),
                 "orderByTimeAsc": True,
-                "keys": keys,
             },
         )
 
@@ -628,23 +616,32 @@ class SolarOfThingsAPI:
         fields = payload_data.get("fields") or (data.get("data") or {}).get("fields") or {}
 
         latest_values: dict[str, Any] = {}
-        field_units: dict[str, str] = {}
+        field_metadata: dict[str, dict[str, Any]] = {}
         for key, raw in fields.items():
             if isinstance(raw, list) and raw:
                 latest_values[key] = raw[-1]
             elif isinstance(raw, dict):
                 if "value" in raw:
                     latest_values[key] = raw["value"]
-                unit = raw.get("unit")
-                if isinstance(unit, str):
-                    field_units[key] = unit
+                field_metadata[key] = {
+                    "unit": raw.get("unit") or "",
+                    "name": raw.get("nameDisplay") or key,
+                    "value_display": raw.get("valueDisplay") or "",
+                    "is_hidden": raw.get("isHidden"),
+                }
+            else:
+                latest_values[key] = raw
 
         # Newer DatouBoss/Siseli responses expose PV input power as pvPower in kW.
         if "pvInputPower" not in latest_values and "pvPower" in latest_values:
             latest_values["pvInputPower"] = latest_values["pvPower"]
-            field_units["pvInputPower"] = field_units.get("pvPower", "")
+            field_metadata["pvInputPower"] = {
+                **field_metadata.get("pvPower", {}),
+                "unit": "W",
+                "name": "PV Input Power",
+            }
 
-        if field_units.get("pvInputPower") == "kW":
+        if field_metadata.get("pvPower", {}).get("unit") == "kW":
             try:
                 latest_values["pvInputPower"] = (
                     float(latest_values["pvInputPower"]) * 1000.0
@@ -652,12 +649,44 @@ class SolarOfThingsAPI:
             except Exception:
                 pass
 
-        # Unit normalisation: acOutputActivePower is kW in API → W
+        # Keep legacy HA entity keys populated from DatouBoss snapshot names.
+        if "loadPower" not in latest_values and "load_power" in latest_values:
+            latest_values["loadPower"] = latest_values["load_power"]
+            field_metadata["loadPower"] = {
+                **field_metadata.get("load_power", {}),
+                "unit": "W",
+                "name": "Load Power",
+            }
+            if field_metadata.get("load_power", {}).get("unit") == "kW":
+                try:
+                    latest_values["loadPower"] = float(latest_values["loadPower"]) * 1000.0
+                except Exception:
+                    pass
+
+        if "batterySOC" not in latest_values and "batteryCapacity" in latest_values:
+            latest_values["batterySOC"] = latest_values["batteryCapacity"]
+            field_metadata["batterySOC"] = {
+                **field_metadata.get("batteryCapacity", {}),
+                "unit": "%",
+                "name": "Battery State of Charge",
+            }
+
+        if "acOutputActivePower" not in latest_values and "loadPower" in latest_values:
+            latest_values["acOutputActivePower"] = latest_values["loadPower"]
+            field_metadata["acOutputActivePower"] = {
+                **field_metadata.get("loadPower", {}),
+                "unit": "W",
+                "name": "AC Output Power",
+            }
+
+        # Unit normalisation: acOutputActivePower can be kW in the API -> W.
         if "acOutputActivePower" in latest_values:
             try:
-                latest_values["acOutputActivePower"] = (
-                    float(latest_values["acOutputActivePower"]) * 1000.0
-                )
+                if field_metadata.get("acOutputActivePower", {}).get("unit") == "kW":
+                    latest_values["acOutputActivePower"] = (
+                        float(latest_values["acOutputActivePower"]) * 1000.0
+                    )
+                    field_metadata["acOutputActivePower"]["unit"] = "W"
             except Exception:
                 pass
 
@@ -673,7 +702,9 @@ class SolarOfThingsAPI:
         battery_power = float(latest_values.get("batteryPower") or 0)
 
         latest_values["gridPower"] = max(0.0, ac_output - pv_power + battery_power + feed_in)
-        latest_values["loadPower"] = ac_output
+        if "loadPower" not in latest_values:
+            latest_values["loadPower"] = ac_output
+        latest_values["__field_metadata"] = field_metadata
 
         return latest_values
 

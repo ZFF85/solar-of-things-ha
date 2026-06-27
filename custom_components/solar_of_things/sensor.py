@@ -39,6 +39,48 @@ _TRANSLATION_KEYS: dict[str, str] = {
 }
 
 
+def _device_sensor_definitions(coordinator_data: dict | None) -> dict[str, dict]:
+    """Return static HA sensors plus all measured DatouBoss fields."""
+    definitions = {
+        key: value
+        for key, value in SENSOR_DEFINITIONS.items()
+        if not key.startswith("monthly_")
+    }
+    ts = (coordinator_data or {}).get("time_series") or {}
+    metadata = ts.get("__field_metadata") or {}
+    for key, meta in metadata.items():
+        if key.startswith("__") or meta.get("is_hidden") is True:
+            continue
+        definitions.setdefault(
+            key,
+            {
+                "name": meta.get("name") or key,
+                "unit": meta.get("unit") or "",
+                "icon": _icon_for_field(key, meta.get("unit") or ""),
+            },
+        )
+    return definitions
+
+
+def _icon_for_field(key: str, unit: str) -> str | None:
+    lower = key.lower()
+    if "pv" in lower or "solar" in lower:
+        return "mdi:solar-power"
+    if "battery" in lower or lower.startswith("bms"):
+        return "mdi:battery"
+    if "temperature" in lower:
+        return "mdi:thermometer"
+    if "grid" in lower or "mains" in lower:
+        return "mdi:transmission-tower"
+    if "load" in lower or "output" in lower:
+        return "mdi:power-plug"
+    if unit in ("W", "kW", "kVA"):
+        return "mdi:flash"
+    if unit in ("V", "A"):
+        return "mdi:sine-wave"
+    return None
+
+
 async def async_setup_entry(
     hass: HomeAssistant,
     entry: ConfigEntry,
@@ -53,14 +95,13 @@ async def async_setup_entry(
 
     entities: list[SensorEntity] = []
 
-    # Per-device sensors
+    # Per-device sensors.  Build these from the first fetched DatouBoss fields
+    # so new measured values appear without hand-maintaining every upstream key.
     for device_id, coordinator in device_coordinators.items():
         device_name = (coordinator.device_meta or {}).get("name") or device_id
+        definitions = _device_sensor_definitions(coordinator.data)
 
-        for key, definition in SENSOR_DEFINITIONS.items():
-            if key.startswith("monthly_"):
-                continue
-
+        for key, definition in definitions.items():
             entities.append(
                 SolarOfThingsDeviceSensor(
                     coordinator=coordinator,
@@ -123,6 +164,10 @@ class SolarOfThingsDeviceSensor(CoordinatorEntity, SensorEntity):
             self._attr_device_class = SensorDeviceClass.POWER
             self._attr_native_unit_of_measurement = UnitOfPower.WATT
             self._attr_state_class = SensorStateClass.MEASUREMENT
+        elif unit == "kW":
+            self._attr_device_class = SensorDeviceClass.POWER
+            self._attr_native_unit_of_measurement = "kW"
+            self._attr_state_class = SensorStateClass.MEASUREMENT
         elif unit == "kWh":
             self._attr_device_class = SensorDeviceClass.ENERGY
             self._attr_native_unit_of_measurement = UnitOfEnergy.KILO_WATT_HOUR
@@ -160,7 +205,18 @@ class SolarOfThingsDeviceSensor(CoordinatorEntity, SensorEntity):
         try:
             return round(float(val), 2)
         except Exception:
-            return None
+            return val
+
+    @property
+    def extra_state_attributes(self):
+        ts = (self.coordinator.data or {}).get("time_series") or {}
+        metadata = (ts.get("__field_metadata") or {}).get(self._sensor_key) or {}
+        attrs = {}
+        if metadata.get("name"):
+            attrs["upstream_name"] = metadata["name"]
+        if metadata.get("value_display"):
+            attrs["value_display"] = metadata["value_display"]
+        return attrs
 
 
 class SolarOfThingsStationMonthlySensor(CoordinatorEntity, SensorEntity):
