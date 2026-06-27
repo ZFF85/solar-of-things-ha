@@ -5,7 +5,7 @@ import logging
 
 from homeassistant.components.number import NumberDeviceClass, NumberEntity, NumberMode
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import PERCENTAGE
+from homeassistant.const import PERCENTAGE, UnitOfElectricCurrent
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
@@ -62,22 +62,29 @@ class _BaseNumber(CoordinatorEntity, NumberEntity):
 
 
 class SolarOfThingsBatteryChargeLimitNumber(_BaseNumber):
-    _setting_key = "batteryChargeLimit"
+    _setting_key = "maximumTotalChargingCurrent"
 
     def __init__(self, api, coordinator, station_id: str, device_id: str, device_name: str) -> None:
         super().__init__(api, coordinator, station_id, device_id, device_name)
-        self._attr_name = f"{device_name} Battery Charge Limit"
+        self._attr_name = f"{device_name} Maximum Charging Current"
         self._attr_unique_id = f"{DOMAIN}_{station_id}_{device_id}_battery_charge_limit"
         self._attr_native_min_value = 0
-        self._attr_native_max_value = 100
+        self._attr_native_max_value = 200
         self._attr_native_step = 1
-        self._attr_native_unit_of_measurement = PERCENTAGE
+        self._attr_native_unit_of_measurement = UnitOfElectricCurrent.AMPERE
         self._attr_mode = NumberMode.SLIDER
         self._attr_icon = "mdi:battery-arrow-up"
 
     @property
     def native_value(self):
-        return ((self.coordinator.data or {}).get("settings") or {}).get(self._setting_key)
+        data = self.coordinator.data or {}
+        settings = data.get("settings") or {}
+        if self._setting_key in settings:
+            setting = settings[self._setting_key]
+            if isinstance(setting, dict):
+                return setting.get("value")
+            return setting
+        return (data.get("time_series") or {}).get(self._setting_key)
 
     async def async_set_native_value(self, value: float) -> None:
         await self.hass.async_add_executor_job(self._api.set_battery_charge_limit, self._device_id, int(value))

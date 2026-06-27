@@ -866,9 +866,9 @@ class SolarOfThingsAPI:
         value = 2 if enabled else 1   # SBU=2 (battery before grid), SUB=1
         self._write_setting(device_id, "outputSourcePrioritySetting", value)
 
-    def set_battery_charge_limit(self, device_id: str, percent: int) -> None:
-        """Set battery charge limit (0–100 %)."""
-        self._write_setting(device_id, "batteryChargeLimit", percent)
+    def set_battery_charge_limit(self, device_id: str, amps: int) -> None:
+        """Set maximum total charging current in amps."""
+        self._write_setting(device_id, "maximumTotalChargingCurrent", amps)
 
     def set_battery_discharge_limit(self, device_id: str, percent: int) -> None:
         """Set battery discharge limit / minimum SOC (0–100 %)."""
