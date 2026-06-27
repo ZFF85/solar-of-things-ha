@@ -4,53 +4,65 @@ on:
   push:
     tags:
       - "v*.*.*"
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Tag to release, for example v2.7.1"
+        required: true
+        type: string
 
 permissions:
   contents: write
 
 jobs:
   release:
-    name: Build & publish GitHub release
+    name: Build and publish GitHub release
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.tag || github.ref_name }}
 
-      - name: Read version from manifest
-        id: version
+      - name: Set release metadata
+        id: meta
         run: |
-          VERSION=$(python3 -c "import json; print(json.load(open('custom_components/solar_of_things/manifest.json'))['version'])")
+          TAG="${{ github.event.inputs.tag || github.ref_name }}"
+          VERSION="${TAG#v}"
+          MANIFEST_VERSION=$(python3 -c "import json; print(json.load(open('custom_components/solar_of_things/manifest.json'))['version'])")
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
-          echo "Building release for version $VERSION"
+          echo "manifest_version=$MANIFEST_VERSION" >> "$GITHUB_OUTPUT"
+          if [ "$VERSION" != "$MANIFEST_VERSION" ]; then
+            echo "::warning::Tag version $VERSION does not match manifest version $MANIFEST_VERSION"
+          fi
 
       - name: Build HACS release ZIP
         run: |
+          rm -f solar-of-things-ha.zip
           zip -r solar-of-things-ha.zip custom_components/solar_of_things/ \
-            -x "*.pyc" -x "__pycache__/*"
-          echo "ZIP size: $(du -sh solar-of-things-ha.zip | cut -f1)"
-          echo "ZIP contents:"
+            -x "*.pyc" -x "*/__pycache__/*"
           unzip -l solar-of-things-ha.zip
 
-      - name: Extract changelog section for this tag
-        id: changelog
+      - name: Extract changelog section
         run: |
-          TAG="${GITHUB_REF_NAME}"
-          VER="${TAG#v}"
-          NOTES=$(awk "/^## \[${VER}\]/{flag=1; next} /^## \[/{flag=0} flag" CHANGELOG.md)
-          if [ -z "$NOTES" ]; then
-            NOTES=$(head -60 CHANGELOG.md)
-          fi
-          printf '%s' "$NOTES" > release_notes.txt
+          VERSION="${{ steps.meta.outputs.version }}"
+          awk "/^## \[${VERSION}\]/{flag=1; next} /^## \[/{flag=0} flag" CHANGELOG.md > release_notes.txt
+          if [ ! -s release_notes.txt ]; then
+            cat > release_notes.txt <<'EOF'
+          Solar of Things Home Assistant integration release.
 
-      - name: Create GitHub Release & upload asset
-        uses: softprops/action-gh-release@v3
+          See the repository changelog and README for details.
+          EOF
+          fi
+
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ github.ref_name }}
-          name: "${{ github.ref_name }} — Solar of Things HA Integration"
+          tag_name: ${{ steps.meta.outputs.tag }}
+          name: "${{ steps.meta.outputs.tag }} - Solar of Things"
           body_path: release_notes.txt
           draft: false
           prerelease: false
           files: solar-of-things-ha.zip
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

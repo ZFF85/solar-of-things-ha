@@ -16,10 +16,10 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
@@ -76,7 +76,7 @@ jobs:
           cd custom_components/solar_of_things
           python3 -m py_compile \
             __init__.py api.py config_flow.py const.py \
-            sensor.py number.py select.py switch.py
+            sensor.py number.py select.py switch.py datetime.py
           echo "Python syntax OK"
 
       - name: Run unit tests (if present)
