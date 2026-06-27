@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from datetime import datetime
+from zoneinfo import ZoneInfo
 import logging
 
 from homeassistant.components.datetime import DateTimeEntity
@@ -31,7 +32,16 @@ async def async_setup_entry(
         if "setSystemTime" not in settings:
             continue
         device_name = (coordinator.device_meta or {}).get("name") or device_id
-        entities.append(SolarOfThingsSystemTimeDateTime(api, coordinator, station_id, device_id, device_name))
+        entities.append(
+            SolarOfThingsSystemTimeDateTime(
+                api,
+                coordinator,
+                station_id,
+                device_id,
+                device_name,
+                hass.config.time_zone,
+            )
+        )
 
     async_add_entities(entities)
 
@@ -49,12 +59,21 @@ class SolarOfThingsSystemTimeDateTime(CoordinatorEntity, DateTimeEntity):
 
     _setting_key = "setSystemTime"
 
-    def __init__(self, api, coordinator, station_id: str, device_id: str, device_name: str) -> None:
+    def __init__(
+        self,
+        api,
+        coordinator,
+        station_id: str,
+        device_id: str,
+        device_name: str,
+        time_zone: str,
+    ) -> None:
         super().__init__(coordinator)
         self._api = api
         self._station_id = station_id
         self._device_id = device_id
         self._device_name = device_name
+        self._time_zone = time_zone
         self._attr_name = f"{device_name} System Time"
         self._attr_unique_id = f"{DOMAIN}_{station_id}_{device_id}_system_time"
         self._attr_icon = "mdi:clock-outline"
@@ -75,8 +94,9 @@ class SolarOfThingsSystemTimeDateTime(CoordinatorEntity, DateTimeEntity):
         if not raw or not isinstance(raw, str):
             return None
         try:
-            return datetime.strptime(raw, "%Y-%m-%d %H:%M:%S")
-        except ValueError:
+            parsed = datetime.strptime(raw, "%Y-%m-%d %H:%M:%S")
+            return parsed.replace(tzinfo=ZoneInfo(self._time_zone))
+        except Exception:
             return None
 
     async def async_set_value(self, value: datetime) -> None:
